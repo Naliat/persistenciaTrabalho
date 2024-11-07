@@ -35,4 +35,84 @@ Este sistema foi desenvolvido para gerenciar informações de uma farmácia, inc
 - `Tarja`: Tipo de tarja do remédio (ex: vermelha, preta, etc.).  
 - `Preço`: Preço do remédio.  
 - `Validade`: Data de validade do remédio.  
-- `ID_Remédio`: Identificador único do remédio.  
+- `ID_Remédio`: Identificador único do remédio.
+
+---
+
+# API de Controle de Estoque de Remédios
+
+Este projeto é uma API simples desenvolvida com FastAPI para gerenciar o estoque de remédios. A API permite adicionar, listar, atualizar e deletar remédios, utilizando um arquivo CSV como base de dados.
+
+## Inicialização do Servidor
+
+1. Certifique-se de que você tem o Python e o FastAPI instalados.
+2. No terminal, execute o seguinte comando para iniciar o servidor:
+
+    ```bash
+    uvicorn main:app --reload
+    ```
+
+3. Acesse a documentação interativa da API em [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
+
+---
+
+## Endpoints Disponíveis
+
+### Base URL
+
+`http://127.0.0.1:8000`
+
+### **1. Inserir Remédio (`POST /remedio`)**
+
+Adiciona um novo remédio ao estoque.
+
+- **URL:** `POST /remedio`
+- **Body (raw, JSON):**
+
+    ```json
+    {
+        "nome": "Paracetamol",
+        "tarja": "Branca",
+        "preco": 10.5,
+        "validade": "2025-12-31",
+        "id_remedio": "001"
+    }
+    ```
+
+### **2. Listar Todos os Remédios (`GET /remedios`)**
+
+Retorna todos os remédios cadastrados.
+
+- **URL:** `GET /remedios`
+
+### **3. Atualizar um Remédio (`PUT /remedio/{id_remedio}`)**
+
+Atualiza as informações de um remédio existente.
+
+- **URL:** `PUT /remedio/{id_remedio}`
+
+- **Body (raw, JSON):**
+
+    ```json
+    {
+        "nome": "Paracetamol",
+        "tarja": "Vermelha",
+        "preco": 12.0,
+        "validade": "2026-01-01",
+        "id_remedio": "001"
+    }
+    ```
+
+### **4. Deletar um Remédio (`DELETE /remedio/{id_remedio}`)**
+
+Remove um remédio do estoque.
+
+- **URL:** `DELETE /remedio/{id_remedio}`
+
+---
+
+## Ferramentas Recomendadas
+
+### Postman
+
+Para testar os endpoints, recomendamos o uso do [Postman](https://www.postman.com/), que facilita a realização de requisições HTTP.
