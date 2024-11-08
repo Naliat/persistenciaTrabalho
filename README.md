@@ -4,11 +4,11 @@
 
 ## Descrição
 
-Este sistema foi desenvolvido para gerenciar informações de uma farmácia, incluindo a administração de funcionários, controle de estoque e cadastro de remédios. O objetivo é otimizar o fluxo de trabalho e assegurar a organização dos dados.
+Este sistema foi desenvolvido para gerenciar informações de uma farmácia, incluindo o controle de fornecedores, estoque e cadastro de remédios. O objetivo é otimizar o fluxo de trabalho e assegurar a organização dos dados.
 
 ## Funcionalidades
 
-- **Gerenciamento de Funcionários**: Cadastro e consulta de informações dos funcionários, incluindo cargo e salário.  
+- **Gerenciamento de Fornecedores: Cadastro e consulta de informações dos fornecedores que abastecem a farmácia.
 - **Controle de Estoque**: Registro de entradas, saídas e monitoramento das validades dos produtos.  
 - **Cadastro de Remédios**: Registro de remédios com informações detalhadas, como tarja e validade.  
 
@@ -17,18 +17,19 @@ Este sistema foi desenvolvido para gerenciar informações de uma farmácia, inc
 ### Entidades e Atributos
 
 #### Funcionário
-- `ID_Funcionário`: Identificador único do funcionário.  
-- `Nome`: Nome completo do funcionário.  
-- `Cargo`: Cargo ocupado na farmácia.  
-- `Salário`: Salário do funcionário.  
-- `Data_Salário`: Data de pagamento do salário.  
+- `ID_Fornecedor`: Identificador único do fornecedor. 
+- `nome_fornecedor`: Nome do fornecedor.
+- `contato`: Informações de contato do fornecedor.  
+- `endereço`: Localização do fornecedor.  
+- `Tipo_Produto`: Tipo de produto fornecido (ex.: remédios, equipamentos médicos, etc.).
 
 #### Estoque
+- `id_do_remedio`: Informações adicionais de cuidado com o produto.
 - `Quantidade`: Quantidade de itens no estoque.  
 - `Data_Validade`: Data de validade do produto.  
 - `Data_Entrada_Estoque`: Data de entrada do produto no estoque.  
 - `Unidade_Medida`: Unidade de medida do produto.  
-- `Observações_Cuidado`: Informações adicionais de cuidado com o produto.  
+  
 
 #### Remédio
 - `Nome`: Nome do remédio.  
