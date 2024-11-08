@@ -8,7 +8,7 @@ Este sistema foi desenvolvido para gerenciar informações de uma farmácia, inc
 
 ## Funcionalidades
 
-- **Gerenciamento de Fornecedores: Cadastro e consulta de informações dos fornecedores que abastecem a farmácia.
+- **Gerenciamento de Fornecedores**: Cadastro e consulta de informações dos fornecedores que abastecem a farmácia.
 - **Controle de Estoque**: Registro de entradas, saídas e monitoramento das validades dos produtos.  
 - **Cadastro de Remédios**: Registro de remédios com informações detalhadas, como tarja e validade.  
 
