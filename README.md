@@ -16,7 +16,7 @@ Este sistema foi desenvolvido para gerenciar informações de uma farmácia, inc
 
 ### Entidades e Atributos
 
-#### Funcionário
+#### Fornecedor
 - `ID_Fornecedor`: Identificador único do fornecedor. 
 - `nome_fornecedor`: Nome do fornecedor.
 - `contato`: Informações de contato do fornecedor.  
