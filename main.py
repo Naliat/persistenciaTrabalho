@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 import csv
 import os
@@ -140,7 +141,11 @@ def compactar_csv():
         zip_file.write('estoque_remedios.csv', arcname='estoque_remedios.csv')
     zip_buffer.seek(0)
     
-    return {"file": zip_buffer.getvalue().hex()}
+    return StreamingResponse(
+        zip_buffer,
+        media_type='application/x-zip-compressed',
+        headers={"Content-Disposition": "attachment; filename=estoque_remedios.zip"}
+    )
 
 
 @app.get("/hash_csv")
