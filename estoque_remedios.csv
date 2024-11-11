@@ -1,11 +1,33 @@
-nome,tarja,preco,validade,id_remedio
-Dipirona,Azul,10.8,2025-12-02,1
-Ibuprofeno,Branca,15.5,2025-06-01,2
-Amoxicilina,Vermelha,25.0,2026-01-20,3
-Paracetamol,Branca,8.0,2025-11-10,4
-Cetirizina,Azul,12.0,2025-09-15,5
-Diclofenaco,Vermelha,18.75,2026-03-05,6
-Clonazepam,Preta,30.0,2026-08-22,7
-Metformina,Branca,20.0,2026-02-12,8
-Aspirina,Branca,7.5,2025-07-07,9
-Losartana,Vermelha,22.3,2026-04-10,10
+id_remedio,nome,tarja,preco,validade
+1,Dipirona 200mg,Sem Tarja,10.5,2025-12-31
+2,Paracetamol 750mg,Vermelha,12.5,2026-01-30
+3,Ibuprofeno 1000mg,Preta,16.0,2026-03-01
+4,Amoxicilina 500mg,Sem Tarja,20.0,2026-03-31
+5,Captopril 750mg,Vermelha,22.0,2026-04-30
+6,Dipirona 1000mg,Preta,10.5,2026-05-30
+7,Paracetamol 500mg,Sem Tarja,12.5,2026-06-29
+8,Ibuprofeno 750mg,Vermelha,16.0,2026-07-29
+9,Amoxicilina 1000mg,Preta,20.0,2026-08-28
+10,Captopril 500mg,Sem Tarja,22.0,2026-09-27
+11,Dipirona 750mg,Vermelha,10.5,2026-10-27
+12,Paracetamol 1000mg,Preta,12.5,2026-11-26
+13,Ibuprofeno 500mg,Sem Tarja,16.0,2026-12-26
+14,Amoxicilina 750mg,Vermelha,20.0,2027-01-25
+15,Captopril 1000mg,Preta,22.0,2027-02-24
+16,Dipirona 500mg,Sem Tarja,10.5,2027-03-26
+17,Paracetamol 200mg,Vermelha,12.5,2027-04-25
+18,Ibuprofeno 200mg,Preta,16.0,2027-05-25
+19,Amoxicilina 200mg,Sem Tarja,20.0,2027-06-24
+20,Captopril 200mg,Vermelha,22.0,2027-07-24
+21,Dipirona 300mg,Preta,10.5,2027-08-23
+22,Paracetamol 150mg,Sem Tarja,12.5,2027-09-22
+23,Ibuprofeno 285mg,Vermelha,16.0,2027-10-22
+24,Amoxicilina 2000mg,Preta,20.0,2027-11-21
+25,Captopril 400mg,Sem Tarja,22.0,2027-12-21
+26,Dipirona 850mg,Vermelha,10.5,2028-01-20
+27,Paracetamol 900mg,Preta,12.5,2028-02-19
+28,Ibuprofeno 505mg,Sem Tarja,16.0,2028-03-20
+29,Amoxicilina 125mg,Vermelha,20.0,2028-04-19
+30,Captopril 450mg,Preta,22.0,2028-05-19
+
+
