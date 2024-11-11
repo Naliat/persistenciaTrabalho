@@ -3,33 +3,32 @@ from pydantic import BaseModel
 import csv
 import os
 
-
 # Definindo a classe do Remédio
 class Remedio:
-    def __init__(self, nome, tarja, preco, validade, id_remedio):
+    def __init__(self, id_remedio, nome, tarja, preco, validade):
+        self.id_remedio = id_remedio
         self.nome = nome
         self.tarja = tarja
         self.preco = preco
         self.validade = validade
-        self.id_remedio = id_remedio
 
     def to_dict(self):
         return {
+            "id_remedio": self.id_remedio,
             "nome": self.nome,
             "tarja": self.tarja,
             "preco": self.preco,
             "validade": self.validade,
-            "id_remedio": self.id_remedio,
         }
 
     @staticmethod
     def from_dict(data):
         return Remedio(
+            id_remedio=data["id_remedio"],
             nome=data["nome"],
             tarja=data["tarja"],
             preco=data["preco"],
             validade=data["validade"],
-            id_remedio=data["id_remedio"],
         )
 
 
@@ -40,7 +39,7 @@ app = FastAPI()
 # Função auxiliar para salvar os dados no arquivo CSV
 def save_to_csv(remedios):
     with open("estoque_remedios.csv", mode="w", newline="") as file:
-        fieldnames = remedios[0].to_dict().keys()
+        fieldnames = ["id_remedio", "nome", "tarja", "preco", "validade"]
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
         for remedio in remedios:
@@ -60,18 +59,18 @@ def load_from_csv():
 
 # Classe para definir o modelo da requisição para criar o Remédio
 class RemedioRequest(BaseModel):
+    id_remedio: str
     nome: str
     tarja: str
     preco: float
     validade: str
-    id_remedio: str
 
 
 # Endpoint para adicionar um remédio
-@app.post("/remedio")
+@app.post("/remedios")
 def add_remedio(remedio: RemedioRequest):
     remedio_obj = Remedio(
-        remedio.nome, remedio.tarja, remedio.preco, remedio.validade, remedio.id_remedio
+        remedio.id_remedio, remedio.nome, remedio.tarja, remedio.preco, remedio.validade
     )
     remedios = load_from_csv()
     remedios.append(remedio_obj)
@@ -87,7 +86,7 @@ def get_remedios():
 
 
 # Endpoint para atualizar um remédio
-@app.put("/remedio/{id_remedio}")
+@app.put("/remedios/{id_remedio}")
 def update_remedio(id_remedio: str, remedio: RemedioRequest):
     remedios = load_from_csv()
     for r in remedios:
@@ -96,23 +95,19 @@ def update_remedio(id_remedio: str, remedio: RemedioRequest):
             r.tarja = remedio.tarja
             r.preco = remedio.preco
             r.validade = remedio.validade
-            save_to_csv(remedios)  # Reescrever o CSV
+            save_to_csv(remedios)
             return {"message": "Remédio atualizado com sucesso"}
     return {"message": "Remédio não encontrado"}
 
 
 # Endpoint para deletar um remédio
-@app.delete("/remedio/{id_remedio}")
+@app.delete("/remedios/{id_remedio}")
 def delete_remedio(id_remedio: str):
     remedios = load_from_csv()
-    # Filtrar o remédio com o id fornecido
-    remedios = [r for r in remedios if r.id_remedio != id_remedio]
+    remedios_filtrados = [r for r in remedios if r.id_remedio != id_remedio]
 
-    if len(remedios) == len(
-        load_from_csv()
-    ):  # Se o número de itens não mudar, o remédio não foi encontrado
+    if len(remedios) == len(remedios_filtrados):
         return {"message": "Remédio não encontrado"}
 
-    # Reescrever o arquivo CSV sem o remédio deletado
-    save_to_csv(remedios)
+    save_to_csv(remedios_filtrados)
     return {"message": "Remédio deletado com sucesso"}

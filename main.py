@@ -19,21 +19,21 @@ class Remedio:
 
     def to_dict(self):
         return {
+            "id_remedio": self.id_remedio,  # Coloca o ID primeiro
             "nome": self.nome,
             "tarja": self.tarja,
             "preco": self.preco,
             "validade": self.validade,
-            "id_remedio": self.id_remedio,
         }
 
     @staticmethod
     def from_dict(data):
         return Remedio(
+            id_remedio=data["id_remedio"],
             nome=data["nome"],
             tarja=data["tarja"],
             preco=float(data["preco"]),
             validade=data["validade"],
-            id_remedio=data["id_remedio"],
         )
 
 
@@ -68,24 +68,12 @@ class RemedioRequest(BaseModel):
     id_remedio: str
 
 
-@app.post("/remedio")
-def add_remedio(remedio: RemedioRequest):
+@app.post("/remedios")
+def add_remedios(remedio: RemedioRequest):
     remedios = load_from_csv()
 
-    # Regras de validação
     if any(r.id_remedio == remedio.id_remedio for r in remedios):
         raise HTTPException(status_code=400, detail="ID do remédio já existe.")
-    if any(
-        r.nome == remedio.nome
-        and r.tarja == remedio.tarja
-        and r.preco == remedio.preco
-        and r.validade == remedio.validade
-        for r in remedios
-    ):
-        raise HTTPException(
-            status_code=400,
-            detail="Já existe um remédio com os mesmos dados cadastrados.",
-        )
 
     remedios.append(Remedio(**remedio.dict()))
     save_to_csv(remedios)
@@ -98,26 +86,11 @@ def get_remedios():
     return [remedio.to_dict() for remedio in remedios]
 
 
-@app.put("/remedio/{id_remedio}")
-def update_remedio(id_remedio: str, remedio: RemedioRequest):
+@app.put("/remedios/{id_remedio}")
+def update_remedios(id_remedio: str, remedio: RemedioRequest):
     remedios = load_from_csv()
-
     for r in remedios:
         if r.id_remedio == id_remedio:
-            # Regras de validação para evitar duplicação na atualização
-            if any(
-                r2.id_remedio != id_remedio
-                and r2.nome == remedio.nome
-                and r2.tarja == remedio.tarja
-                and r2.preco == remedio.preco
-                and r2.validade == remedio.validade
-                for r2 in remedios
-            ):
-                raise HTTPException(
-                    status_code=400,
-                    detail="Já existe outro remédio com os mesmos dados.",
-                )
-
             r.nome = remedio.nome
             r.tarja = remedio.tarja
             r.preco = remedio.preco
@@ -128,8 +101,8 @@ def update_remedio(id_remedio: str, remedio: RemedioRequest):
     raise HTTPException(status_code=404, detail="Remédio não encontrado")
 
 
-@app.delete("/remedio/{id_remedio}")
-def delete_remedio(id_remedio: str):
+@app.delete("/remedios/{id_remedio}")
+def delete_remedios(id_remedio: str):
     remedios = load_from_csv()
     remedios_filtrados = [r for r in remedios if r.id_remedio != id_remedio]
 
@@ -144,14 +117,14 @@ def delete_remedio(id_remedio: str):
     return {"message": "Remédio deletado com sucesso"}
 
 
-@app.get("/quantidade_remedios")
+@app.get("/remedios/quantidade")
 def get_quantidade_remedios():
     remedios = load_from_csv()
     return {"quantidade": len(remedios)}
 
 
-@app.get("/compactar_csv")
-def compactar_csv():
+@app.get("/remedios/compactar")
+def compactar_remedios():
     if not os.path.exists("estoque_remedios.csv"):
         raise HTTPException(status_code=404, detail="Arquivo CSV não encontrado")
 
@@ -167,8 +140,8 @@ def compactar_csv():
     )
 
 
-@app.get("/hash_csv")
-def get_hash_csv():
+@app.get("/remedios/hash")
+def get_hash_remedios():
     if not os.path.exists("estoque_remedios.csv"):
         raise HTTPException(status_code=404, detail="Arquivo CSV não encontrado")
 
