@@ -63,20 +63,20 @@ Este projeto é uma API simples desenvolvida com FastAPI para gerenciar o estoqu
 
 `http://127.0.0.1:8000`
 
-### **1. Inserir Remédio (`POST /remedio`)**
+### **1. Inserir Remédio (`POST /remedios`)**
 
 Adiciona um novo remédio ao estoque.
 
-- **URL:** `POST /remedio`
+- **URL:** `POST /remedios`
 - **Body (raw, JSON):**
 
     ```json
     {
+        "id_remedio": "001",
         "nome": "Paracetamol",
         "tarja": "Branca",
         "preco": 10.5,
-        "validade": "2025-12-31",
-        "id_remedio": "001"
+        "validade": "2025-12-31"
     }
     ```
 
@@ -86,29 +86,29 @@ Retorna todos os remédios cadastrados.
 
 - **URL:** `GET /remedios`
 
-### **3. Atualizar um Remédio (`PUT /remedio/{id_remedio}`)**
+### **3. Atualizar um Remédio (`PUT /remedios/{id_remedio}`)**
 
 Atualiza as informações de um remédio existente.
 
-- **URL:** `PUT /remedio/{id_remedio}`
+- **URL:** `PUT /remedios/{id_remedio}`
 
 - **Body (raw, JSON):**
 
     ```json
     {
+        "id_remedio": "001",
         "nome": "Paracetamol",
         "tarja": "Vermelha",
         "preco": 12.0,
-        "validade": "2026-01-01",
-        "id_remedio": "001"
+        "validade": "2026-01-01"
     }
     ```
 
-### **4. Deletar um Remédio (`DELETE /remedio/{id_remedio}`)**
+### **4. Deletar um Remédio (`DELETE /remedios/{id_remedio}`)**
 
 Remove um remédio do estoque.
 
-- **URL:** `DELETE /remedio/{id_remedio}`
+- **URL:** `DELETE /remedios/{id_remedio}`
 
 ---
 
