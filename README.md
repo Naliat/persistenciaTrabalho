@@ -96,7 +96,7 @@ Atualiza as informações de um remédio existente.
 
     ```json
     {
-        "id_remedio": "001",
+        "id_": "001",
         "nome": "Paracetamol",
         "tarja": "Vermelha",
         "preco": 12.0,
