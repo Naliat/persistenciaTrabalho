@@ -1,4 +1,4 @@
-id_remedio,nome,tarja,preco,validade
+id,nome,tarja,preco,validade
 1,Dipirona 200mg,Sem Tarja,10.5,2025-12-31
 2,Paracetamol 750mg,Vermelha,12.5,2026-01-30
 3,Ibuprofeno 1000mg,Preta,16.0,2026-03-01
@@ -28,4 +28,4 @@ id_remedio,nome,tarja,preco,validade
 27,Paracetamol 900mg,Preta,12.5,2028-02-19
 28,Ibuprofeno 505mg,Sem Tarja,16.0,2028-03-20
 29,Amoxicilina 125mg,Vermelha,20.0,2028-04-19
-30,Captopril 450mg,Preta,22.0,2028-05-19
+30,Cloridrato de Zolpidem,Preta,35.0,2026-06-15

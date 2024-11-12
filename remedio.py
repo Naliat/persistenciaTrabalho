@@ -1,114 +1,81 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
-import csv
+import pandas as pd
 import os
+from hashlib import sha256
+from io import BytesIO
+import zipfile
 
+CSV_FILE = "estoque_remedios.csv"
 
-# Definindo a classe do Remédio
-class Remedio:
-    def __init__(self, id_remedio, nome, tarja, preco, validade):
-        self.id_remedio = id_remedio
-        self.nome = nome
-        self.tarja = tarja
-        self.preco = preco
-        self.validade = validade
+def load_remedios():
+    if os.path.exists(CSV_FILE):
+        return pd.read_csv(CSV_FILE)
+    return pd.DataFrame(columns=["id", "nome", "tarja", "preco", "validade"])
 
-    def to_dict(self):
-        return {
-            "id_remedio": self.id_remedio,
-            "nome": self.nome,
-            "tarja": self.tarja,
-            "preco": self.preco,
-            "validade": self.validade,
-        }
+def save_remedios(df):
+    df.to_csv(CSV_FILE, index=False)
 
-    @staticmethod
-    def from_dict(data):
-        return Remedio(
-            id_remedio=data["id_remedio"],
-            nome=data["nome"],
-            tarja=data["tarja"],
-            preco=data["preco"],
-            validade=data["validade"],
-        )
+def add_remedio(remedio):
+    df = load_remedios()
+    
+    # Verificando se o remédio já existe com os mesmos parâmetros
+    if not df[
+        (df['nome'].str.contains(remedio['nome'], case=False, na=False)) &
+        (df['tarja'].str.contains(remedio['tarja'], case=False, na=False)) &
+        (df['preco'] == remedio['preco']) &
+        (df['validade'] == remedio['validade'])
+    ].empty:
+        raise ValueError("Remédio com os mesmos parâmetros já existe.")
 
+    if remedio['id'] in df['id'].values:
+        raise ValueError("ID do remédio já existe.")
 
-# Inicializando o FastAPI
-app = FastAPI()
+    df = pd.concat([df, pd.DataFrame([remedio])], ignore_index=True)
+    save_remedios(df)
 
+def update_remedio(id, remedio):
+    df = load_remedios()
+    df['id'] = df['id'].astype(str)
 
-# Função auxiliar para salvar os dados no arquivo CSV
-def save_to_csv(remedios):
-    with open("estoque_remedios.csv", mode="w", newline="") as file:
-        fieldnames = ["id_remedio", "nome", "tarja", "preco", "validade"]
-        writer = csv.DictWriter(file, fieldnames=fieldnames)
-        writer.writeheader()
-        for remedio in remedios:
-            writer.writerow(remedio.to_dict())
+    if id not in df['id'].values:
+        raise ValueError("Remédio não encontrado.")
 
+    df.loc[df['id'] == id, ['nome', 'tarja', 'preco', 'validade']] = [
+        remedio['nome'], remedio['tarja'], remedio['preco'], remedio['validade']
+    ]
+    save_remedios(df)
 
-# Função auxiliar para carregar os dados do CSV
-def load_from_csv():
-    remedios = []
-    if os.path.exists("estoque_remedios.csv"):
-        with open("estoque_remedios.csv", mode="r") as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                remedios.append(Remedio.from_dict(row))
-    return remedios
+def delete_remedio(id):
+    df = load_remedios()
+    df['id'] = df['id'].astype(str)
 
+    if id not in df['id'].values:
+        raise ValueError("Remédio não encontrado.")
 
-# Classe para definir o modelo da requisição para criar o Remédio
-class RemedioRequest(BaseModel):
-    id_remedio: str
-    nome: str
-    tarja: str
-    preco: float
-    validade: str
+    df = df[df['id'] != id]
+    if df.empty:
+        os.remove(CSV_FILE)
+    else:
+        save_remedios(df)
 
-
-# Endpoint para adicionar um remédio
-@app.post("/remedios")
-def add_remedio(remedio: RemedioRequest):
-    remedio_obj = Remedio(
-        remedio.id_remedio, remedio.nome, remedio.tarja, remedio.preco, remedio.validade
-    )
-    remedios = load_from_csv()
-    remedios.append(remedio_obj)
-    save_to_csv(remedios)
-    return {"message": "Remédio inserido com sucesso"}
-
-
-# Endpoint para listar todos os remédios
-@app.get("/remedios")
 def get_remedios():
-    remedios = load_from_csv()
-    return [remedio.to_dict() for remedio in remedios]
+    return load_remedios().to_dict(orient="records")
 
+def get_quantidade_remedios():
+    return len(load_remedios())
 
-# Endpoint para atualizar um remédio
-@app.put("/remedios/{id_remedio}")
-def update_remedio(id_remedio: str, remedio: RemedioRequest):
-    remedios = load_from_csv()
-    for r in remedios:
-        if r.id_remedio == id_remedio:
-            r.nome = remedio.nome
-            r.tarja = remedio.tarja
-            r.preco = remedio.preco
-            r.validade = remedio.validade
-            save_to_csv(remedios)
-            return {"message": "Remédio atualizado com sucesso"}
-    return {"message": "Remédio não encontrado"}
+def compactar_remedios():
+    if not os.path.exists(CSV_FILE):
+        raise FileNotFoundError("Arquivo CSV não encontrado.")
+    
+    zip_buffer = BytesIO()
+    with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
+        zip_file.write(CSV_FILE, arcname="estoque_remedios.csv")
+    zip_buffer.seek(0)
+    return zip_buffer
 
-
-# Endpoint para deletar um remédio
-@app.delete("/remedios/{id_remedio}")
-def delete_remedio(id_remedio: str):
-    remedios = load_from_csv()
-    remedios_filtrados = [r for r in remedios if r.id_remedio != id_remedio]
-
-    if len(remedios) == len(remedios_filtrados):
-        return {"message": "Remédio não encontrado"}
-
-    save_to_csv(remedios_filtrados)
-    return {"message": "Remédio deletado com sucesso"}
+def get_hash_remedios():
+    if not os.path.exists(CSV_FILE):
+        raise FileNotFoundError("Arquivo CSV não encontrado.")
+    
+    with open(CSV_FILE, "rb") as file:
+        return sha256(file.read()).hexdigest()
