@@ -10,12 +10,105 @@ Este sistema foi desenvolvido para gerenciar informações de uma farmácia, inc
 
 - **Gerenciamento de Fornecedores**: Cadastro e consulta de informações dos fornecedores que abastecem a farmácia.
 - **Controle de Estoque**: Registro de entradas, saídas e monitoramento das validades dos produtos.  
-- **Cadastro de Remédios**: Registro de remédios com informações detalhadas, como tarja e validade.  
+- **Cadastro de Remédios**: Registro de remédios com informações detalhadas, como tarja e validade.
+
+## Detalhamento e modularização dos arquivos
+
+### `remedio.py`
+
+Este arquivo contém toda a lógica para manipular os dados do estoque de remédios. Ele inclui funções para carregar, salvar, adicionar, atualizar e deletar remédios.
+
+#### Principais Funções
+
+- **`load_remedios()`**  
+  Carrega os dados do arquivo `estoque_remedios.csv` em um DataFrame. Se o arquivo não existir, cria um DataFrame vazio.
+
+- **`save_remedios(df)`**  
+  Salva o DataFrame atualizado no arquivo CSV.
+
+- **`add_remedio(remedio: RemedioRequest)`**  
+  Adiciona um novo remédio ao estoque, verificando se o `id` ou os dados já existem.
+
+- **`update_remedio(id: str, remedio: RemedioRequest)`**  
+  Atualiza as informações de um remédio existente com base no `id`.
+
+- **`delete_remedio(id: str)`**  
+  Remove um remédio do estoque com base no `id`.
+
+- **Outras Funções**  
+  Funções para obter a quantidade de remédios, compactar os dados em um arquivo zip e calcular o hash do arquivo CSV.
+
+### `main.py`
+
+Este arquivo define os endpoints da API. Ele utiliza as funções de `remedio.py` para realizar as operações de CRUD e outras funcionalidades.
+
+#### Principais Endpoints
+
+- **`POST /remedios`**  
+  Adiciona um novo remédio ao estoque.
+
+- **`GET /remedios`**  
+  Retorna todos os remédios cadastrados.
+
+- **`PUT /remedios/{id}`**  
+  Atualiza as informações de um remédio existente.
+
+- **`DELETE /remedios/{id}`**  
+  Remove um remédio do estoque.
+
+- **`GET /remedios/quantidade`**  
+  Retorna a quantidade total de remédios cadastrados.
+
+- **`GET /remedios/compactar`**  
+  Gera e retorna um arquivo zip contendo o arquivo CSV do estoque.
+
+- **`GET /remedios/hash`**  
+  Retorna o hash SHA256 do arquivo CSV para verificação de integridade.
+
+- **`GET /`**  
+  Endpoint raiz que retorna uma mensagem de funcionamento da API.
+
+## Criando o ambiente e testando a aplicação
+
+1. Certifique-se de ter Python instalado:
+   ```bash
+   python --version
+   
+2. Clone o repositório:
+   ```bash
+   git clone <URL_DO_REPOSITORIO>
+   
+
+3. Crie o ambiente virtual: No terminal, navegue até o diretório onde você deseja criar o ambiente virtual e execute:
+   ```bash
+   python -m venv nome_do_ambiente
+
+4. Ativando o ambiente virtual (Windows):
+   ```bash
+   nome_do_ambiente\Scripts\activate
+
+5. Ativando o ambiente virtual (Linux/Mac):
+   ```bash
+   source nome_do_ambiente/bin/activate
+
+6. Instalar as depencias:
+   ```bash
+   pip install -r requirements.txt
+
+7. Execultar a aplicação:
+   ```bash
+   uvicorn main:app --reload
 
 ## Estrutura de Dados
 
 ### Entidades e Atributos
 
+#### Remédio
+- `id_`: Identificador único do remédio.
+- `Nome`: Nome do remédio.  
+- `Tarja`: Tipo de tarja do remédio (ex: vermelha, preta, etc.).  
+- `Preço`: Preço do remédio.  
+- `Validade`: Data de validade do remédio.  
 #### Fornecedor
 - `ID_Fornecedor`: Identificador único do fornecedor. 
 - `nome_fornecedor`: Nome do fornecedor.
@@ -31,12 +124,6 @@ Este sistema foi desenvolvido para gerenciar informações de uma farmácia, inc
 - `Unidade_Medida`: Unidade de medida do produto.  
   
 
-#### Remédio
-- `Nome`: Nome do remédio.  
-- `Tarja`: Tipo de tarja do remédio (ex: vermelha, preta, etc.).  
-- `Preço`: Preço do remédio.  
-- `Validade`: Data de validade do remédio.  
-- `ID_Remédio`: Identificador único do remédio.
 
 ---
 
@@ -113,7 +200,8 @@ Remove um remédio do estoque.
 ---
 
 ## Ferramentas Recomendadas
-
+### Python
+Acesse o site oficial do Python: [https://www.python.org/downloads/](https://www.python.org/downloads/)
 ### Postman
 
 Para testar os endpoints, recomendamos o uso do [Postman](https://www.postman.com/), que facilita a realização de requisições HTTP.
