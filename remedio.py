@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import csv
 import os
 
+
 # Definindo a classe do Remédio
 class Remedio:
     def __init__(self, id_remedio, nome, tarja, preco, validade):

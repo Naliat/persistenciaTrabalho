@@ -19,7 +19,7 @@ class Remedio:
 
     def to_dict(self):
         return {
-            "id_remedio": self.id_remedio,  # Coloca o ID primeiro
+            "id_remedio": self.id_remedio,
             "nome": self.nome,
             "tarja": self.tarja,
             "preco": self.preco,
@@ -74,11 +74,15 @@ def add_remedios(remedio: RemedioRequest):
 
     # Verifica se já existe um remédio com os mesmos parâmetros (nome, tarja, preco, validade)
     if any(
-        r.nome == remedio.nome and r.tarja == remedio.tarja and r.preco == remedio.preco 
+        r.nome == remedio.nome
+        and r.tarja == remedio.tarja
+        and r.preco == remedio.preco
         and r.validade == remedio.validade
         for r in remedios
     ):
-        raise HTTPException(status_code=400, detail="Remédio com os mesmos parâmetros já existe.")
+        raise HTTPException(
+            status_code=400, detail="Remédio com os mesmos parâmetros já existe."
+        )
 
     # Verifica se o ID já está em uso
     if any(r.id_remedio == remedio.id_remedio for r in remedios):
