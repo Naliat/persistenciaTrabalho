@@ -104,11 +104,11 @@ Este arquivo define os endpoints da API. Ele utiliza as funções de `remedio.py
 ### Entidades e Atributos
 
 #### Remédio
-- `id_`: Identificador único do remédio.
-- `Nome`: Nome do remédio.  
-- `Tarja`: Tipo de tarja do remédio (ex: vermelha, preta, etc.).  
-- `Preço`: Preço do remédio.  
-- `Validade`: Data de validade do remédio.  
+- `id`: Identificador único do remédio.
+- `nome`: Nome do remédio.  
+- `tarja`: Tipo de tarja do remédio (ex: vermelha, preta, etc.).  
+- `preço`: Preço do remédio.  
+- `validade`: Data de validade do remédio.  
 #### Fornecedor
 - `ID_Fornecedor`: Identificador único do fornecedor. 
 - `nome_fornecedor`: Nome do fornecedor.
