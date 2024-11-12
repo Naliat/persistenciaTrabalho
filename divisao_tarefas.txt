@@ -1,7 +1,8 @@
-Escolher o tema -> Tailan e Kaio
-Read.me no gitHUb -> Tailan
-Escolher os Atributos -> Tailan
-Fazer a main.py -> Tailan
-Escolher as Entidades -> Kaio 
-Fazer o Remedio.py -> Kaio
-Correção Final  -> Tailan e Kaio
+Escolher o tema -> Tailan e Kaio.
+Read.me no gitHUb -> Tailan.
+Escolher os Atributos -> Tailan.
+Fazer a main.py -> Tailan.
+Lógica do Sistemas -> Tailan e Kaio.
+Escolher as Entidades -> Kaio.
+Fazer o Remedio.py -> Kaio.
+Correção Final  -> Tailan e Kaio.
