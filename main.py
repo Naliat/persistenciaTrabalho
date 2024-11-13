@@ -15,10 +15,10 @@ class RemedioRequest(BaseModel):
 @app.post("/remedios")
 def add_remedios(remedio_req: RemedioRequest):
     try:
-        remedio.add_remedio(remedio_req.dict())
+        remedio.add_remedio(remedio_req.model_dump())
         return {"message": "Remédio inserido com sucesso"}
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=409 , detail=str(e))
 
 @app.get("/remedios")
 def get_remedios():
