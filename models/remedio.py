@@ -1,4 +1,3 @@
-# models/remedio.py
 from pydantic import BaseModel
 
 class RemedioRequest(BaseModel):
