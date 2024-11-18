@@ -1,33 +1,27 @@
+# app.py
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
-import remedio  
+from models.remedio import RemedioRequest
+import services.remedio as remedio_service  # Importa o módulo de serviços de remédio
 
 app = FastAPI()
-
-class RemedioRequest(BaseModel):
-    id: str
-    nome: str
-    tarja: str
-    preco: float
-    validade: str
 
 @app.post("/remedios")
 def add_remedios(remedio_req: RemedioRequest):
     try:
-        remedio.add_remedio(remedio_req.model_dump())
+        remedio_service.add_remedio(remedio_req.dict())  # Passa os dados como dicionário
         return {"message": "Remédio inserido com sucesso"}
     except ValueError as e:
-        raise HTTPException(status_code=409 , detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))
 
 @app.get("/remedios")
 def get_remedios():
-    return remedio.get_remedios()
+    return remedio_service.get_remedios()
 
 @app.put("/remedios/{id}")
 def update_remedios(id: str, remedio_req: RemedioRequest):
     try:
-        remedio.update_remedio(id, remedio_req.dict())
+        remedio_service.update_remedio(id, remedio_req.dict())
         return {"message": "Remédio atualizado com sucesso"}
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
@@ -35,19 +29,19 @@ def update_remedios(id: str, remedio_req: RemedioRequest):
 @app.delete("/remedios/{id}")
 def delete_remedios(id: str):
     try:
-        remedio.delete_remedio(id)
+        remedio_service.delete_remedio(id)
         return {"message": "Remédio deletado com sucesso"}
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
 @app.get("/remedios/quantidade")
 def get_quantidade_remedios():
-    return {"quantidade": remedio.get_quantidade_remedios()}
+    return {"quantidade": remedio_service.get_quantidade_remedios()}
 
 @app.get("/remedios/compactar")
 def compactar_remedios():
     try:
-        zip_buffer = remedio.compactar_remedios()
+        zip_buffer = remedio_service.compactar_remedios()
         return StreamingResponse(
             zip_buffer,
             media_type="application/x-zip-compressed",
@@ -59,7 +53,7 @@ def compactar_remedios():
 @app.get("/remedios/hash")
 def get_hash_remedios():
     try:
-        return {"hash_sha256": remedio.get_hash_remedios()}
+        return {"hash_sha256": remedio_service.get_hash_remedios()}
     except FileNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
