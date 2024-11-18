@@ -159,7 +159,7 @@ Adiciona um novo remédio ao estoque.
 
     ```json
     {
-        "id_remedio": "001",
+        "id": "1",
         "nome": "Paracetamol",
         "tarja": "Branca",
         "preco": 10.5,
@@ -183,7 +183,7 @@ Atualiza as informações de um remédio existente.
 
     ```json
     {
-        "id_": "001",
+        "id": "1",
         "nome": "Paracetamol",
         "tarja": "Vermelha",
         "preco": 12.0,
