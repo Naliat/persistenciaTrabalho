@@ -21,7 +21,7 @@ def get_remedios():
 @app.put("/remedios/{id}")
 def update_remedios(id: str, remedio_req: RemedioRequest):
     try:
-        remedio_service.update_remedio(id, remedio_req.dict())
+        remedio_service.update_remedio(id, remedio_req.model_dump())
         return {"message": "Remédio atualizado com sucesso"}
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
