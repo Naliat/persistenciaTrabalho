@@ -9,7 +9,7 @@ app = FastAPI()
 @app.post("/remedios")
 def add_remedios(remedio_req: RemedioRequest):
     try:
-        remedio_service.add_remedio(remedio_req.dict())  # Passa os dados como dicionário
+        remedio_service.add_remedio(remedio_req.model_dump())  # Passa os dados como dicionário
         return {"message": "Remédio inserido com sucesso"}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
