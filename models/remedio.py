@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class RemedioRequest(BaseModel):
     id: str
     nome: str

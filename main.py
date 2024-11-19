@@ -1,22 +1,24 @@
-# app.py
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import StreamingResponse
 from models.remedio import RemedioRequest
-import services.remedio as remedio_service  # Importa o módulo de serviços de remédio
+import services.remedio as remedio_service
 
 app = FastAPI()
+
 
 @app.post("/remedios")
 def add_remedios(remedio_req: RemedioRequest):
     try:
-        remedio_service.add_remedio(remedio_req.model_dump())  # Passa os dados como dicionário
+        remedio_service.add_remedio(remedio_req.model_dump())
         return {"message": "Remédio inserido com sucesso"}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+
 @app.get("/remedios")
 def get_remedios():
     return remedio_service.get_remedios()
+
 
 @app.put("/remedios/{id}")
 def update_remedios(id: str, remedio_req: RemedioRequest):
@@ -26,6 +28,7 @@ def update_remedios(id: str, remedio_req: RemedioRequest):
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
+
 @app.delete("/remedios/{id}")
 def delete_remedios(id: str):
     try:
@@ -34,9 +37,11 @@ def delete_remedios(id: str):
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
+
 @app.get("/remedios/quantidade")
 def get_quantidade_remedios():
     return {"quantidade": remedio_service.get_quantidade_remedios()}
+
 
 @app.get("/remedios/compactar")
 def compactar_remedios():
@@ -45,10 +50,13 @@ def compactar_remedios():
         return StreamingResponse(
             zip_buffer,
             media_type="application/x-zip-compressed",
-            headers={"Content-Disposition": "attachment; filename=estoque_remedios.zip"},
+            headers={
+                "Content-Disposition": "attachment; filename=estoque_remedios.zip"
+            },
         )
     except FileNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
+
 
 @app.get("/remedios/hash")
 def get_hash_remedios():
@@ -56,6 +64,7 @@ def get_hash_remedios():
         return {"hash_sha256": remedio_service.get_hash_remedios()}
     except FileNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
+
 
 @app.get("/")
 def read_root():
