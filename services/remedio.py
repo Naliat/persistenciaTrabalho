@@ -20,6 +20,11 @@ def save_remedios(df):
 def add_remedio(remedio):
     df = load_remedios()
 
+    df["id"] = df["id"].astype(str)
+
+    remedio["id"] = str(remedio["id"])
+
+
     if not df[
         (df["nome"].str.contains(remedio["nome"], case=False, na=False))
         & (df["tarja"].str.contains(remedio["tarja"], case=False, na=False))
