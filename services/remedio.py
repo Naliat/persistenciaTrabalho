@@ -14,17 +14,18 @@ def load_remedios():
 
 
 def save_remedios(df):
+ 
     df.to_csv(CSV_FILE, index=False)
 
 
 def add_remedio(remedio):
+ 
     df = load_remedios()
 
     df["id"] = df["id"].astype(str)
-
     remedio["id"] = str(remedio["id"])
 
-
+ 
     if not df[
         (df["nome"].str.contains(remedio["nome"], case=False, na=False))
         & (df["tarja"].str.contains(remedio["tarja"], case=False, na=False))
@@ -36,8 +37,16 @@ def add_remedio(remedio):
     if remedio["id"] in df["id"].values:
         raise ValueError("ID do remédio já existe.")
 
-    df = pd.concat([df, pd.DataFrame([remedio])], ignore_index=True)
-    save_remedios(df)
+    
+    with open(CSV_FILE, mode='a', newline='') as f:
+ 
+        if f.tell() == 0:
+            header = ["id", "nome", "tarja", "preco", "validade"]
+ 
+            f.write(','.join(header) + '\n')
+        
+      
+        f.write(f"{remedio['id']},{remedio['nome']},{remedio['tarja']},{remedio['preco']},{remedio['validade']}\n")
 
 
 def update_remedio(id, remedio):
