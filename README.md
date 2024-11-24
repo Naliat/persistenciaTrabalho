@@ -99,7 +99,7 @@ Este arquivo define os endpoints da API. Ele utiliza as funções de `remedio.py
    ```bash
    uvicorn main:app --reload
 
-## Estrutura de Dados
+## Estrutura da Aplicação
 
 ### Entidades e Atributos
 
